@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name" translatable="false">PassionFruitDetector</string>
+    <string name="title_camera">Camera</string>
+    <string name="title_history">History</string>
+    <string name="title_settings">Settings</string>
+    
+    <string name="label_feedback_mode">Feedback Mode</string>
+    <string name="label_speech_language">Speech Language</string>
+    <string name="label_default_camera">Default Camera</string>
+    <string name="label_display_mode">Display Mode</string>
+    <string name="label_show_confidence">Show Confidence</string>
+    <string name="label_maximum_display_results">Maximum Display Results</string>
+    <string name="label_display_threshold">Display Threshold</string>
+    <string name="label_model">Inference Model</string>
+    <string name="label_inference_device">Inference Device</string>
+    
+    <string name="label_display_only">Display Only</string>
+    <string name="label_display_and_speech">Display and Speech</string>
+    <string name="label_display_and_vibration">Display and Vibrations</string>
+    <string name="label_display_speech_and_vibration">Display, Speech and Vibrations</string>
+    
+    <string name="label_front_camera">Front Camera</string>
+    <string name="label_back_camera">Back Camera</string>
+
+    <string name="label_text_only">Text Only</string>
+    <string name="label_text_and_box">Text and Box</string>
+
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    
+    <string name="desc_feedback_mode">How would you like the results to be delivered?</string>
+    <string name="desc_default_camera">Which camera would you like to start detections with?</string>
+    <string name="desc_display_mode">What would you like the display to show?</string>
+    <string name="desc_inference_device">Which device would you like to run detection using?</string>
+    <string name="desc_inference_model">Which model would you like to run detection using?</string>
+
+    <string name="label_cpu" translatable="false">CPU</string>
+    <string name="label_gpu" translatable="false">GPU</string>
+    <string name="label_nnapi" translatable="false">NNAPI</string>
+
+</resources>

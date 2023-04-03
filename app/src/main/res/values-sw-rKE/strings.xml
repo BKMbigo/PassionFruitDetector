@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_camera">Kamera</string>
+    <string name="title_history">Historia</string>
+    <string name="title_settings">Mipangilio</string>
+    <string name="label_feedback_mode">Namna ya kueleza matokeo</string>
+    <string name="label_speech_language">Lugha ya mazugumzo</string>
+    <string name="label_default_camera">Kamera ya kuanzia</string>
+    <string name="label_display_mode">Hali ya maonyesho</string>
+    <string name="label_show_confidence">Onyesha Imani</string>
+    <string name="label_maximum_display_results">Nambari ya matokeo ya kuonyesha</string>
+    <string name="label_display_threshold">Kikomo cha kuonyesha</string>
+    <string name="label_model">Kigunduzi</string>
+    <string name="label_inference_device">Kifaa cha kugundua</string>
+    <string name="label_display_only">Maonyesho Pekee</string>
+    <string name="label_display_and_speech">Maonyesho na Mazungumzo</string>
+    <string name="label_display_and_vibration">Maonyesho na Matetemeko</string>
+    <string name="label_display_speech_and_vibration">Maonyesho, Mazumgumzo na Matetemeko</string>
+    <string name="label_front_camera">Kamera ya mbele</string>
+    <string name="label_back_camera">Kamera ya nyuma</string>
+    <string name="label_text_only">Maandishi Pekee</string>
+    <string name="label_text_and_box">Maandishi na Michoro</string>
+    <string name="label_yes">Ndio</string>
+    <string name="label_no">La</string>
+    <string name="desc_feedback_mode">Je, wataka matokeo yawasilishwe vipi?</string>
+    <string name="desc_default_camera">Je, ungependa kuanza ugunduzi kwa kamera gani?</string>
+    <string name="desc_display_mode">Je, ungependa onyesho lionyeshe nin?</string>
+    <string name="desc_inference_device">Je, ungependa kutumia kifaa kipi kwa ugunduzi</string>
+    <string name="desc_inference_model">Je, ungependa kutumia kigunduzi kipi kugundua afia ya matunda?</string>
+</resources>
