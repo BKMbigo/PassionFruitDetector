@@ -159,8 +159,8 @@ private fun DetectionPanel(
                     textLayoutResult = measuredText,
                     color = Color.Blue,
                     topLeft = Offset(
-                        bounds.toViewX(0.5f) - measuredText.size.width / 2,
-                        bounds.toViewY(0.5f) - measuredText.size.height / 2,
+                        rectangle.centerX() - measuredText.size.width / 2,
+                        rectangle.centerY() - measuredText.size.height / 2,
                     )
                 )
 

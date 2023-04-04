@@ -8,4 +8,4 @@ This is a proof of concept application that showcases the use of computer vision
 - [Preferences Datastore](https://developer.android.com/topic/libraries/architecture/datastore)
 - [CameraX](https://developer.android.com/training/camerax)
 - [Tensorflow Lite Task Vision](https://www.tensorflow.org/lite/inference_with_metadata/task_library/object_detector)
-- [Context Recievers](https://github.com/Kotlin/KEEP/blob/master/proposals/context-receivers.md) are used for dependency injection
+- [Context Receivers](https://github.com/Kotlin/KEEP/blob/master/proposals/context-receivers.md) are used for dependency injection
