@@ -80,6 +80,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.4.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

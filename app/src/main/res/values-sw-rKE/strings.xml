@@ -22,6 +22,8 @@
     <string name="label_text_and_box">Maandishi na Michoro</string>
     <string name="label_yes">Ndio</string>
     <string name="label_no">La</string>
+    <string name="label_save_detection">Hifahi Matokeo?</string>
+    <string name="desc_save_history">Je, watakakuhifadhi matokeo katika historia?</string>
     <string name="desc_feedback_mode">Je, wataka matokeo yawasilishwe vipi?</string>
     <string name="desc_default_camera">Je, ungependa kuanza ugunduzi kwa kamera gani?</string>
     <string name="desc_display_mode">Je, ungependa onyesho lionyeshe nin?</string>

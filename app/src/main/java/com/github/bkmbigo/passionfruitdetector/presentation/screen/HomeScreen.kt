@@ -35,6 +35,7 @@ import com.github.bkmbigo.passionfruitdetector.domain.repositories.ImageAnalyzer
 import com.github.bkmbigo.passionfruitdetector.domain.repositories.SettingsRepository
 import com.github.bkmbigo.passionfruitdetector.ml.PassionEfficientDet0
 import com.github.bkmbigo.passionfruitdetector.presentation.components.bottombar.HomeBottomBar
+import com.github.bkmbigo.passionfruitdetector.presentation.components.input.InputScreen
 import com.github.bkmbigo.passionfruitdetector.presentation.navigation.BottomBarDestination
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.task.core.BaseOptions
@@ -95,26 +96,53 @@ fun HomeScreen() {
         ) {
             when (activeDestination) {
                 BottomBarDestination.Camera -> {
-                    if (passionFruitDetector != null) {
-                        with(passionFruitDetector!!) {
-                            CameraScreen()
+                    InputScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        CameraScreen = {
+                            if (passionFruitDetector != null) {
+                                with(passionFruitDetector!!) {
+                                    CameraScreen()
+                                }
+                            } else {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.HourglassEmpty,
+                                        contentDescription = null,
+                                        tint = Color.Green
+                                    )
+                                    Text(
+                                        text = "Setting Up Model..."
+                                    )
+                                }
+                            }
+                        },
+                        GalleryScreen = {
+                            if (passionFruitDetector != null) {
+                                with(passionFruitDetector!!) {
+                                    GalleryScreen()
+                                }
+                            } else {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.HourglassEmpty,
+                                        contentDescription = null,
+                                        tint = Color.Green
+                                    )
+                                    Text(
+                                        text = "Setting Up Model..."
+                                    )
+                                }
+                            }
                         }
-                    } else {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.HourglassEmpty,
-                                contentDescription = null,
-                                tint = Color.Green
-                            )
-                            Text(
-                                text = "Setting Up Model"
-                            )
-                        }
-                    }
+                    )
                 }
 
                 BottomBarDestination.Settings -> {

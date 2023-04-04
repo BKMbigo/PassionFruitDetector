@@ -1,8 +1,6 @@
 package com.github.bkmbigo.passionfruitdetector.presentation.screen
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.graphics.RectF
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +15,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cameraswitch
 import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,8 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.bkmbigo.passionfruitdetector.domain.models.AnalysisResult
 import com.github.bkmbigo.passionfruitdetector.domain.models.settings.AppSettings
@@ -38,28 +33,43 @@ import com.github.bkmbigo.passionfruitdetector.domain.models.settings.DefaultCam
 import com.github.bkmbigo.passionfruitdetector.domain.models.settings.FeedbackMode
 import com.github.bkmbigo.passionfruitdetector.domain.models.settings.InferenceDevice
 import com.github.bkmbigo.passionfruitdetector.domain.models.settings.PassionFruitModel
+import com.github.bkmbigo.passionfruitdetector.domain.repositories.HistoryRepository
 import com.github.bkmbigo.passionfruitdetector.domain.repositories.ImageAnalyzer
 import com.github.bkmbigo.passionfruitdetector.domain.repositories.SettingsRepository
 import com.github.bkmbigo.passionfruitdetector.domain.utils.ImageMetadata
 import com.github.bkmbigo.passionfruitdetector.presentation.components.camera.CameraPreview
+import com.github.bkmbigo.passionfruitdetector.presentation.components.dialogs.SaveHistoryDialog
 import com.github.bkmbigo.passionfruitdetector.presentation.components.ml.DetectorView
-import com.github.bkmbigo.passionfruitdetector.presentation.theme.PassionFruitDetectorTheme
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.tensorflow.lite.support.label.Category
-import org.tensorflow.lite.task.vision.detector.Detection
 import kotlin.time.Duration
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
-context(ImageAnalyzer, SettingsRepository)
+context(ImageAnalyzer, HistoryRepository, SettingsRepository)
         @Composable
 fun CameraScreen() {
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     // State Variables
-    var cameraSelector by remember { mutableStateOf(CameraSelector.DEFAULT_BACK_CAMERA) }
+    val appSettings by observeSettings().collectAsState(
+        initial = AppSettings(
+            feedbackMode = FeedbackMode.DISPLAY_ONLY,
+            showConfidence = true,
+            defaultCamera = DefaultCamera.BACK,
+            maximumDisplayResults = 1,
+            displayThreshold = 0.7f,
+            passionFruitModel = PassionFruitModel.EFFICIENT_DET_0,
+            inferenceDevice = InferenceDevice.CPU
+        )
+    )
+
+    var showSaveDialog by remember { mutableStateOf(false) }
+
+    var cameraSelector by remember(appSettings) {
+        mutableStateOf(
+            if (appSettings.defaultCamera == DefaultCamera.BACK) {
+                CameraSelector.DEFAULT_BACK_CAMERA
+            } else CameraSelector.DEFAULT_FRONT_CAMERA
+        )
+    }
     var camera by remember { mutableStateOf<Camera?>(null) }
     val flashLightIsPresent by remember {
         derivedStateOf {
@@ -69,15 +79,15 @@ fun CameraScreen() {
     var flashLightIsOn by remember { mutableStateOf(false) }
 
     val detectionResult = remember { mutableStateOf<AnalysisResult>(AnalysisResult.NoResult) }
-    val inferenceTime by remember {
-        derivedStateOf {
-            when (detectionResult.value) {
-                is AnalysisResult.EmptyResult -> (detectionResult as AnalysisResult.EmptyResult).inferenceTime
-                AnalysisResult.NoResult -> Duration.ZERO
-                is AnalysisResult.WithResult -> (detectionResult as AnalysisResult.WithResult).inferenceTime
-            }
-        }
-    }
+//    val inferenceTime by remember {
+//        derivedStateOf {
+//            when (detectionResult.value) {
+//                is AnalysisResult.EmptyResult -> (detectionResult.value as AnalysisResult.EmptyResult).inferenceTime
+//                AnalysisResult.NoResult -> Duration.ZERO
+//                is AnalysisResult.WithResult -> (detectionResult.value as AnalysisResult.WithResult).inferenceTime
+//            }
+//        }
+//    }
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         CameraPreview(
@@ -166,105 +176,16 @@ fun CameraScreen() {
             constraints = constraints,
             isImageFlipped = cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA,
             modifier = Modifier.fillMaxSize(),
+            isGalleryView = false
         )
 
-    }
-}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun PreviewCameraScreen() {
-    PassionFruitDetectorTheme {
-        Scaffold {
-            with(
-                object : ImageAnalyzer {
-                    override fun analyzeImage(
-                        bitmap: Bitmap,
-                        imageRotation: Int,
-                        imageMetadata: ImageMetadata
-                    ): AnalysisResult = AnalysisResult.WithResult(
-                        detections = listOf(
-                            Detection.create(
-                                RectF(120.10f, 30.1f, 132.10f, 60.0f),
-                                listOf(
-                                    Category("fruit_healthy", 0.7f)
-                                )
-                            )
-                        ),
-                        inferenceTime = 1300.toDuration(DurationUnit.MILLISECONDS),
-                        imageMetadata = ImageMetadata(192, 192, 0, false)
-                    )
-                },
-            ) {
-                with(
-                    object : SettingsRepository {
-                        override fun observeSettings(): Flow<AppSettings> {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getFeedbackMode(): FeedbackMode {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setFeedbackMode(feedbackMode: FeedbackMode) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getShowConfidence(): Boolean {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setShowConfidence(showConfidence: Boolean) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getDefaultCamera(): DefaultCamera {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setDefaultCamera(defaultCamera: DefaultCamera) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getMaximumDisplayResults(): Int {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setMaximumDisplayResults(maximumResults: Int) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getDisplayThreshold(): Float {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setDisplayThreshold(displayThreshold: Float) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getPassionFruitModel(): PassionFruitModel {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setPassionFruitModel(passionFruitModel: PassionFruitModel) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun getInferenceDevice(): InferenceDevice {
-                            TODO("Not yet implemented")
-                        }
-
-                        override suspend fun setInferenceDevice(inferenceDevice: InferenceDevice) {
-                            TODO("Not yet implemented")
-                        }
-
-                    }
-                ) {
-                    CameraScreen()
+        SaveHistoryDialog(
+            analysisState = detectionResult,
+            saveAction = { detectionHistories ->
+                coroutineScope.launch {
+                    detectionHistories.map { detectionHistory -> insertHistoryItem(detectionHistory) }
                 }
             }
-        }
+        )
     }
 }

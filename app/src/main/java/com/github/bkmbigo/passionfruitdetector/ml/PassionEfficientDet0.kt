@@ -64,7 +64,7 @@ class PassionEfficientDet0(
             context: Context,
             options: ObjectDetectorOptions
         ): PassionEfficientDet0 {
-            val modelPath = "money_model.tflite"
+            val modelPath = "efficientdet_lite0_passion.tflite"
             val objectDetector = ObjectDetector.createFromFileAndOptions(context, modelPath, options)
             Log.i(TAG, "buildPassionFruitDetector: Object Detector created")
             return PassionEfficientDet0(objectDetector)

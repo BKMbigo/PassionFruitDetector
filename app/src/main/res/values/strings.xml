@@ -37,5 +37,7 @@
     <string name="label_cpu" translatable="false">CPU</string>
     <string name="label_gpu" translatable="false">GPU</string>
     <string name="label_nnapi" translatable="false">NNAPI</string>
+    <string name="label_save_detection">Save Detection?</string>
+    <string name="desc_save_history">Do you want to save the current detection in app database?</string>
 
 </resources>
